@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap  PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="account">
+
+	<typeAlias alias="ACCOUNT" type="com.fpt.edu.model.Account" />
+
+	<resultMap id="accountResultMap" class="ACCOUNT">
+		<result property="accountId" column="ACCOUNT_ID" />
+		<result property="name" column="NAME" />
+		<result property="email" column="EMAIL" />
+		<result property="password" column="PASSWORD" />
+		<result property="status" column="STATUS" />
+	</resultMap>
+	
+	<select id="getAccountById" parameterClass="java.lang.String"
+		resultMap="accountResultMap">
+		SELECT * FROM ACCOUNT WHERE EMAIL = #value#
+	</select>
+
+</sqlMap>

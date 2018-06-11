@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="loginActionBean" class="com.fpt.edu.action.LoginAction">
+		<property name="userDAO" ref="userDAO" />
+	</bean>
+
+	<bean id="userDAO" class="com.fpt.edu.dao.UserDAO" />
+
+	<bean id="placeholderConfig"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location">
+			<value>classpath:application.properties</value>
+		</property>
+	</bean>
+
+	<!--data source definition -->
+	<bean id="dataSource"
+		class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName">
+			<value>${driverClassName}</value>
+		</property>
+		<property name="url">
+			<value>${url}</value>
+		</property>
+		<property name="username">
+			<value>${username}</value>
+		</property>
+		<property name="password">
+			<value>${password}</value>
+		</property>
+	</bean>
+
+	<!-- setup transaction manager -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	<bean id="sqlMapClient"
+		class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
+		<property name="configLocation"
+			value="classpath:sqlMapConfig.xml" />
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<bean id="accountDaoImpl"
+		class="com.fpt.edu.dao.impl.AccountDaoImpl">
+		<property name="sqlMapClient" ref="sqlMapClient" />
+	</bean>
+
+	<bean id="SignInActionBean"
+		class="com.fpt.edu.action.SignInAction">
+		<property name="accountDAO" ref="accountDaoImpl" />
+	</bean>
+</beans>
